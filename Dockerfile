@@ -330,7 +330,7 @@ RUN  \
         echo ${FRIBIDI_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f ${FRIBIDI_VERSION}.tar.gz && \
         sed -i 's/^SUBDIRS =.*/SUBDIRS=gen.tab charset lib bin/' Makefile.am && \
-        ./bootstrap --no-config --auto && \
+        # ./bootstrap --no-config --auto && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
         make -j1 && \
         make install && \
