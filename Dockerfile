@@ -543,7 +543,7 @@ RUN  \
 RUN \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
         ./configure \
-        --ld="g++"
+        --ld="g++" \
         --disable-debug \
         --disable-doc \
         --disable-ffplay \
