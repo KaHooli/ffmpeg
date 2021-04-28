@@ -28,9 +28,9 @@ RUN     apt-get -yqq update && \
 
 FROM    devel-base as build
 
-ENV     NVIDIA_HEADERS_VERSION=9.1.23.1
+ENV     NVIDIA_HEADERS_VERSION=11.0.10.1
 
-ENV         FFMPEG_VERSION=4.4 \
+ENV         FFMPEG_VERSION=snapshot \
             AOM_VERSION=v1.0.0 \
             FDKAAC_VERSION=0.1.5 \
             FONTCONFIG_VERSION=2.12.4 \
@@ -113,6 +113,16 @@ RUN      buildDeps="autoconf \
                     zlib1g-dev" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
+
+RUN \
+	DIR=/tmp/nv-codec-headers && \
+	git clone https://github.com/FFmpeg/nv-codec-headers ${DIR} && \
+	cd ${DIR} && \
+	git checkout n${NVIDIA_HEADERS_VERSION} && \
+	make PREFIX="${PREFIX}" && \
+	make install PREFIX="${PREFIX}" && \
+        rm -rf ${DIR}
+
 ## libvmaf https://github.com/Netflix/vmaf
 RUN \
         if which meson || false; then \
@@ -572,8 +582,12 @@ RUN \
         --enable-libsrt \
         --enable-libaribb24 \
         --enable-libvmaf \
-        --extra-cflags="-I${PREFIX}/include" \
-        --extra-ldflags="-L${PREFIX}/lib" && \
+        --enable-nvenc \
+        --enable-cuda \
+        --enable-cuvid \
+        --enable-libnpp \
+        --extra-cflags="-I${PREFIX}/include -I${PREFIX}/include/ffnvcodec -I/usr/local/cuda/include/" \
+        --extra-ldflags="-L${PREFIX}/lib -L/usr/local/cuda/lib64 -L/usr/local/cuda/lib32/" && \
         make && \
         make install && \
         make tools/zmqsend && cp tools/zmqsend ${PREFIX}/bin/ && \
@@ -603,7 +617,11 @@ ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 CMD         ["--help"]
 ENTRYPOINT  ["ffmpeg"]
 
-COPY --from=build /usr/local /usr/local/
+# copy only needed files, without copying nvidia dev files
+COPY --from=build /usr/local/bin /usr/local/bin/
+COPY --from=build /usr/local/share /usr/local/share/
+COPY --from=build /usr/local/lib /usr/local/lib/
+COPY --from=build /usr/local/include /usr/local/include/
 
 # Let's make sure the app built correctly
 # Convenient to verify on https://hub.docker.com/r/jrottenberg/ffmpeg/builds/ console output
