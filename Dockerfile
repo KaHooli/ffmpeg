@@ -35,6 +35,7 @@ ENV         FFMPEG_VERSION=snapshot \
             FDKAAC_VERSION=2.0.2 \
             # Pulling FontConfig via Git due to fixes added since latest release
             # FONTCONFIG_VERSION=2.13.93 \
+            FONTCONFIG_VERSION=2.12.4 \
             FREETYPE_VERSION=2.10.4 \
             # FRIBIDI_VERSION=v1.0.10 \
             # Can't use latest Fribidi as it has missing files
@@ -346,13 +347,13 @@ RUN  \
 ## fontconfig https://www.freedesktop.org/wiki/Software/fontconfig/
 RUN  \
         DIR=/tmp/fontconfig && \
-        # mkdir -p ${DIR} && \
-        git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git ${DIR} && \
+        mkdir -p ${DIR} && \
+        # git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git ${DIR} && \
         cd ${DIR} && \
-        # curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
+        curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
         # tar -x --xz --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
-        apt update && apt install -yq --no-install-recommends gperf gettext autopoint libfreetype6-dev && \
-        ./autogen.sh && \
+        # apt update && apt install -yq --no-install-recommends gperf gettext autopoint libfreetype6-dev && \
+        # ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
         make && \
         make install && \
