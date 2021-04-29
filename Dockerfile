@@ -326,9 +326,11 @@ RUN  \
         DIR=/tmp/fribidi && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
+        curl -sLO https://github.com/fribidi/fribidi/archive/v1.0.1.tar.gz && \
+        tar -zx --strip-components=1 -f v1.0.1.tar.gz && \
         curl -sLO https://github.com/fribidi/fribidi/archive/${FRIBIDI_VERSION}.tar.gz && \
         echo ${FRIBIDI_SHA256SUM} | sha256sum --check && \
-        tar -zx --strip-components=1 -f ${FRIBIDI_VERSION}.tar.gz && \
+        tar -zx --strip-components=1 --overwrite -f ${FRIBIDI_VERSION}.tar.gz && \
         sed -i 's/^SUBDIRS =.*/SUBDIRS=gen.tab charset lib bin/' Makefile.am && \
         # ./bootstrap --no-config --auto && \
         ./autogen.sh && \
