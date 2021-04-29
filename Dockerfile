@@ -346,9 +346,10 @@ RUN  \
 ## fontconfig https://www.freedesktop.org/wiki/Software/fontconfig/
 RUN  \
         DIR=/tmp/fontconfig && \
-        mkdir -p ${DIR} && \
-        cd ${DIR} && \
+        # mkdir -p ${DIR} && \
+        # cd ${DIR} && \
         git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git ${DIR} && \
+        cd ${DIR} && \
         # curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
         # tar -x --xz --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
