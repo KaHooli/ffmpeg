@@ -33,9 +33,11 @@ ENV     NVIDIA_HEADERS_VERSION=11.0.10.1
 ENV         FFMPEG_VERSION=snapshot \
             AOM_VERSION=v3.0.0 \
             FDKAAC_VERSION=2.0.2 \
-            FONTCONFIG_VERSION=2.13.93 \
+            # Pulling FontConfig via Git due to fixes added since latest release
+            # FONTCONFIG_VERSION=2.13.93 \
             FREETYPE_VERSION=2.10.4 \
             # FRIBIDI_VERSION=v1.0.10 \
+            # Can't use latest Fribidi as it has missing files
             FRIBIDI_VERSION=0.19.7 \
             KVAZAAR_VERSION=2.0.0 \
             LAME_VERSION=3.100 \
@@ -346,8 +348,9 @@ RUN  \
         DIR=/tmp/fontconfig && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
-        curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
-        tar -x --xz --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
+        git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git ${DIR} && \
+        # curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
+        # tar -x --xz --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
         make && \
         make install && \
