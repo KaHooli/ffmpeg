@@ -350,8 +350,8 @@ RUN  \
         mkdir -p ${DIR} && \
         # git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git ${DIR} && \
         cd ${DIR} && \
-        curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
-        # tar -x --xz --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.xz && \
+        curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.bz2 && \
+        tar -jx --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.bz2 && \
         # apt update && apt install -yq --no-install-recommends gperf gettext autopoint libfreetype6-dev && \
         # ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
