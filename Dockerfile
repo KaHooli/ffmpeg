@@ -331,7 +331,7 @@ RUN  \
         tar -zx --strip-components=1 -f ${FRIBIDI_VERSION}.tar.gz && \
         sed -i 's/^SUBDIRS =.*/SUBDIRS=gen.tab charset lib bin/' Makefile.am && \
         # ./bootstrap --no-config --auto && \
-        ./autoreconf --force --install --verbose
+        ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
         make -j1 && \
         make install && \
