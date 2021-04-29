@@ -35,7 +35,8 @@ ENV         FFMPEG_VERSION=snapshot \
             FDKAAC_VERSION=2.0.2 \
             FONTCONFIG_VERSION=2.13.93 \
             FREETYPE_VERSION=2.10.4 \
-            FRIBIDI_VERSION=v1.0.10 \
+            # FRIBIDI_VERSION=v1.0.10 \
+            FRIBIDI_VERSION=0.19.7 \
             KVAZAAR_VERSION=2.0.0 \
             LAME_VERSION=3.100 \
             LIBASS_VERSION=0.15.0 \
@@ -67,7 +68,8 @@ ENV         FFMPEG_VERSION=snapshot \
             SRC=/usr/local
 
 ARG         FREETYPE_SHA256SUM="5eab795ebb23ac77001cfb68b7d4d50b5d6c7469247b0b01b2c953269f658dac freetype-2.10.4.tar.gz"
-ARG         FRIBIDI_SHA256SUM="3ebb19c4184ed6dc324d2e291d7465bc6108a20be019f053f33228e07e879c4f v1.0.10.tar.gz"
+# ARG         FRIBIDI_SHA256SUM="3ebb19c4184ed6dc324d2e291d7465bc6108a20be019f053f33228e07e879c4f v1.0.10.tar.gz"
+ARG         FRIBIDI_SHA256SUM="3fc96fa9473bd31dcb5500bdf1aa78b337ba13eb8c301e7c28923fea982453a8 0.19.7.tar.gz"
 ARG         LIBASS_SHA256SUM="232b1339c633e6a93c153cac7a483e536944921605f35fcbaedc661c62fb49ec 0.15.0.tar.gz"
 ARG         LIBVIDSTAB_SHA256SUM="14d2a053e56edad4f397be0cb3ef8eb1ec3150404ce99a426c4eb641861dc0bb v1.1.0.tar.gz"
 ARG         OGG_SHA256SUM="fe5670640bd49e828d64d2879c31cb4dde9758681bb664f9bdbf159a01b0c76e libogg-1.3.4.tar.gz"
@@ -326,14 +328,15 @@ RUN  \
         DIR=/tmp/fribidi && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
-        curl -sLO https://github.com/fribidi/fribidi/archive/v1.0.1.tar.gz && \
-        tar -zx --strip-components=1 -f v1.0.1.tar.gz && \
+        # Downloading version 1.0.1 prior to desired version to get charset directory, which isn't included in newer versions and thus caused the build to fail (KaHooli)
+        # curl -sLO https://github.com/fribidi/fribidi/archive/v1.0.1.tar.gz && \
+        # tar -zx --strip-components=1 -f v1.0.1.tar.gz && \
         curl -sLO https://github.com/fribidi/fribidi/archive/${FRIBIDI_VERSION}.tar.gz && \
         echo ${FRIBIDI_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 --overwrite -f ${FRIBIDI_VERSION}.tar.gz && \
         sed -i 's/^SUBDIRS =.*/SUBDIRS=gen.tab charset lib bin/' Makefile.am && \
-        # ./bootstrap --no-config --auto && \
-        ./autogen.sh && \
+        ./bootstrap --no-config --auto && \
+        # ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
         make -j1 && \
         make install && \
