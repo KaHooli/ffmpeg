@@ -556,7 +556,7 @@ RUN  \
 RUN \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
         ./configure \
-        --default-library=both \
+        # --default-library=both \
         --disable-debug \
         --disable-doc \
         --disable-ffplay \
