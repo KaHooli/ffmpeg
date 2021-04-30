@@ -366,7 +366,7 @@ RUN  \
         curl -sLO https://github.com/libass/libass/archive/${LIBASS_VERSION}.tar.gz && \
         echo ${LIBASS_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f ${LIBASS_VERSION}.tar.gz && \
-        apt update && apt install -yq --no-install-recommends libharfbuzz-dev &&\
+        apt update && apt install -yq --no-install-recommends libharfbuzz-dev && \
         ./autogen.sh && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
         make && \
@@ -522,10 +522,10 @@ RUN \
 ## libpng
 RUN \
         DIR=/tmp/png && \
-        mkdir -p ${DIR} && \
+        # mkdir -p ${DIR} && \
+        git clone https://git.code.sf.net/p/libpng/code ${DIR} -b v${LIBPNG_VERSION} --depth 1 -c advice.detachedHead=false && \
         cd ${DIR} && \
-        git clone https://git.code.sf.net/p/libpng/code ${DIR} -b v${LIBPNG_VERSION} --depth 1 && \
-        ./autogen.sh && \
+        ./autogen.sh --maintainer && \
         ./configure --prefix="${PREFIX}" && \
         make check && \
         make install && \
