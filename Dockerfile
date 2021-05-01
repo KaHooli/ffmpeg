@@ -550,7 +550,7 @@ RUN  \
         DIR=/tmp/ffmpeg && \
         # mkdir -p ${DIR} && \
         git clone https://git.ffmpeg.org/ffmpeg.git ${DIR} && \
-        cd ${DIR} && \
+        cd ${DIR}
         # curl -sLO https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
         # tar -jx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.bz2
 
