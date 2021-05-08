@@ -623,6 +623,7 @@ RUN \
         cp -v /opt/ffmpeg/lib/libavdevice.so.59 /usr/local/lib/libavdevice.so.59 && \
         cp -v /opt/ffmpeg/lib/libavfilter.so.8 /usr/local/lib/libavfilter.so.8 && \
         cp -v /opt/ffmpeg/lib/libavformat.so.59 /usr/local/lib/libavformat.so.59 && \
+        cp -v /opt/ffmpeg/lib/libavcodec.so.59 /usr/local/lib/libavcodec.so.59 && \
         ldd ${PREFIX}/bin/ffmpeg | grep opt/ffmpeg | cut -d ' ' -f 3 | xargs -i cp {} /usr/local/lib/ && \
         for lib in /usr/local/lib/*.so.*; do ln -s "${lib##*/}" "${lib%%.so.*}".so; done && \
         cp ${PREFIX}/bin/* /usr/local/bin/ && \
