@@ -634,6 +634,7 @@ RUN \
         cp -v /opt/ffmpeg/lib/libvidstab.so.1.1 /usr/local/lib/libvidstab.so.1.1 && \
         cp -v /opt/ffmpeg/lib/libzmq.so.5 /usr/local/lib/libzmq.so.5 && \
         cp -v /opt/ffmpeg/lib/libsrt.so.1.4 /usr/local/lib/libsrt.so.1.4 && \
+        cp -v /opt/ffmpeg/lib/libaribb24.so.0cp -v /opt/ffmpeg/lib/ libaribb24.so.0 && \
         ldd ${PREFIX}/bin/ffmpeg | grep opt/ffmpeg | cut -d ' ' -f 3 | xargs -i cp {} /usr/local/lib/ && \
         for lib in /usr/local/lib/*.so.*; do ln -s "${lib##*/}" "${lib%%.so.*}".so; done && \
         cp ${PREFIX}/bin/* /usr/local/bin/ && \
