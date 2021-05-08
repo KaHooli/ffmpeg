@@ -618,51 +618,51 @@ RUN \
         cd tools && \
         make qt-faststart && cp qt-faststart ${PREFIX}/bin/
 
-# ## cleanup
-# RUN \
-#         # cp -v /opt/ffmpeg/lib/lib*.so.* /usr/local/lib/ && \
-#         cp -v /opt/ffmpeg/lib/libavdevice.so.59 /usr/local/lib/libavdevice.so.59 && \
-#         cp -v /opt/ffmpeg/lib/libavfilter.so.8 /usr/local/lib/libavfilter.so.8 && \
-#         cp -v /opt/ffmpeg/lib/libavformat.so.59 /usr/local/lib/libavformat.so.59 && \
-#         cp -v /opt/ffmpeg/lib/libavcodec.so.59 /usr/local/lib/libavcodec.so.59 && \
-#         cp -v /opt/ffmpeg/lib/libpostproc.so.56 /usr/local/lib/libpostproc.so.56 && \
-#         cp -v /opt/ffmpeg/lib/libswresample.so.4 /usr/local/lib/libswresample.so.4 && \
-#         cp -v /opt/ffmpeg/lib/libswscale.so.6 /usr/local/lib/libswscale.so.6 && \
-#         cp -v /opt/ffmpeg/lib/libavutil.so.57 /usr/local/lib/libavutil.so.57 && \
-#         cp -v /opt/ffmpeg/lib/libxcb-shape.so.0 /usr/local/lib/libxcb-shape.so.0 && \
-#         cp -v /opt/ffmpeg/lib/libass.so.9 /usr/local/lib/libass.so.9 && \
-#         cp -v /opt/ffmpeg/lib/libvidstab.so.1.1 /usr/local/lib/libvidstab.so.1.1 && \
-#         cp -v /opt/ffmpeg/lib/libzmq.so.5 /usr/local/lib/libzmq.so.5 && \
-#         cp -v /opt/ffmpeg/lib/libsrt.so.1.4 /usr/local/lib/libsrt.so.1.4 && \
-#         cp -v /opt/ffmpeg/lib/libaribb24.so.0  /usr/local/lib/libaribb24.so.0 && \
-#         cp -v /opt/ffmpeg/lib/libopencore-amrwb.so.0 /usr/local/lib/libopencore-amrwb.so.0 && \
-#         cp -v /opt/ffmpeg/lib/libaom.so.3 /usr/local/lib/libaom.so.3 && \
-#         cp -v /opt/ffmpeg/lib/libfdk-aac.so.2 /usr/local/lib/libfdk-aac.so.2 && \
-#         cp -v /opt/ffmpeg/lib/libopencore-amrnb.so.0 /usr/local/lib/libopencore-amrnb.so.0 && \
-#         ldd ${PREFIX}/bin/ffmpeg | grep opt/ffmpeg | cut -d ' ' -f 3 | xargs -i cp {} /usr/local/lib/ && \
-#         for lib in /usr/local/lib/*.so.*; do ln -s "${lib##*/}" "${lib%%.so.*}".so; done && \
-#         cp ${PREFIX}/bin/* /usr/local/bin/ && \
-#         cp -r ${PREFIX}/share/ffmpeg /usr/local/share/ && \
-#         LD_LIBRARY_PATH=/usr/local/lib ffmpeg -buildconf && \
-#         cp -r ${PREFIX}/include/libav* ${PREFIX}/include/libpostproc ${PREFIX}/include/libsw* /usr/local/include && \
-#         mkdir -p /usr/local/lib/pkgconfig && \
-#         for pc in ${PREFIX}/lib/pkgconfig/libav*.pc ${PREFIX}/lib/pkgconfig/libpostproc.pc ${PREFIX}/lib/pkgconfig/libsw*.pc; do \
-#           sed "s:${PREFIX}:/usr/local:g" <"$pc" >/usr/local/lib/pkgconfig/"${pc##*/}"; \
-#         done
-#
-# FROM        base AS release
-# MAINTAINER  Julien Rottenberg <julien@rottenberg.info>
-#
-# ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
-#
-# CMD         ["--help"]
-# ENTRYPOINT  ["ffmpeg"]
-#
-# # copy only needed files, without copying nvidia dev files
-# COPY --from=build /usr/local/bin /usr/local/bin/
-# COPY --from=build /usr/local/share /usr/local/share/
-# COPY --from=build /usr/local/lib /usr/local/lib/
-# COPY --from=build /usr/local/include /usr/local/include/
+## cleanup
+RUN \
+        cp -v ${PREFIX}/lib/lib*.so.* /usr/local/lib/ && \
+        # cp -v /opt/ffmpeg/lib/libavdevice.so.59 /usr/local/lib/libavdevice.so.59 && \
+        # cp -v /opt/ffmpeg/lib/libavfilter.so.8 /usr/local/lib/libavfilter.so.8 && \
+        # cp -v /opt/ffmpeg/lib/libavformat.so.59 /usr/local/lib/libavformat.so.59 && \
+        # cp -v /opt/ffmpeg/lib/libavcodec.so.59 /usr/local/lib/libavcodec.so.59 && \
+        # cp -v /opt/ffmpeg/lib/libpostproc.so.56 /usr/local/lib/libpostproc.so.56 && \
+        # cp -v /opt/ffmpeg/lib/libswresample.so.4 /usr/local/lib/libswresample.so.4 && \
+        # cp -v /opt/ffmpeg/lib/libswscale.so.6 /usr/local/lib/libswscale.so.6 && \
+        # cp -v /opt/ffmpeg/lib/libavutil.so.57 /usr/local/lib/libavutil.so.57 && \
+        # cp -v /opt/ffmpeg/lib/libxcb-shape.so.0 /usr/local/lib/libxcb-shape.so.0 && \
+        # cp -v /opt/ffmpeg/lib/libass.so.9 /usr/local/lib/libass.so.9 && \
+        # cp -v /opt/ffmpeg/lib/libvidstab.so.1.1 /usr/local/lib/libvidstab.so.1.1 && \
+        # cp -v /opt/ffmpeg/lib/libzmq.so.5 /usr/local/lib/libzmq.so.5 && \
+        # cp -v /opt/ffmpeg/lib/libsrt.so.1.4 /usr/local/lib/libsrt.so.1.4 && \
+        # cp -v /opt/ffmpeg/lib/libaribb24.so.0  /usr/local/lib/libaribb24.so.0 && \
+        # cp -v /opt/ffmpeg/lib/libopencore-amrwb.so.0 /usr/local/lib/libopencore-amrwb.so.0 && \
+        # cp -v /opt/ffmpeg/lib/libaom.so.3 /usr/local/lib/libaom.so.3 && \
+        # cp -v /opt/ffmpeg/lib/libfdk-aac.so.2 /usr/local/lib/libfdk-aac.so.2 && \
+        # cp -v /opt/ffmpeg/lib/libopencore-amrnb.so.0 /usr/local/lib/libopencore-amrnb.so.0 && \
+        ldd ${PREFIX}/bin/ffmpeg | grep opt/ffmpeg | cut -d ' ' -f 3 | xargs -i cp {} /usr/local/lib/ && \
+        # for lib in /usr/local/lib/*.so.*; do ln -s "${lib##*/}" "${lib%%.so.*}".so; done && \
+        cp ${PREFIX}/bin/* /usr/local/bin/ && \
+        cp -r ${PREFIX}/share/ffmpeg /usr/local/share/ && \
+        LD_LIBRARY_PATH=/usr/local/lib ffmpeg -buildconf && \
+        cp -r ${PREFIX}/include/libav* ${PREFIX}/include/libpostproc ${PREFIX}/include/libsw* /usr/local/include && \
+        mkdir -p /usr/local/lib/pkgconfig && \
+        for pc in ${PREFIX}/lib/pkgconfig/libav*.pc ${PREFIX}/lib/pkgconfig/libpostproc.pc ${PREFIX}/lib/pkgconfig/libsw*.pc; do \
+          sed "s:${PREFIX}:/usr/local:g" <"$pc" >/usr/local/lib/pkgconfig/"${pc##*/}"; \
+        done
+
+FROM        base AS release
+MAINTAINER  Julien Rottenberg <julien@rottenberg.info>
+
+ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+
+CMD         ["--help"]
+ENTRYPOINT  ["ffmpeg"]
+
+# copy only needed files, without copying nvidia dev files
+COPY --from=build /usr/local/bin /usr/local/bin/
+COPY --from=build /usr/local/share /usr/local/share/
+COPY --from=build /usr/local/lib /usr/local/lib/
+COPY --from=build /usr/local/include /usr/local/include/
 
 # Let's make sure the app built correctly
 # Convenient to verify on https://hub.docker.com/r/jrottenberg/ffmpeg/builds/ console output
