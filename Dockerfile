@@ -67,7 +67,7 @@ ENV         FFMPEG_VERSION=4.4 \
             LIBSRT_VERSION=1.4.3 \
             LIBARIBB24_VERSION=1.0.3 \
             LIBPNG_VERSION=1.6.37 \
-            LIBVMAF_VERSION=2.1.1 \
+            # LIBVMAF_VERSION=2.1.1 \
             SRC=/usr/local
 
 ARG         FREETYPE_SHA256SUM="5eab795ebb23ac77001cfb68b7d4d50b5d6c7469247b0b01b2c953269f658dac freetype-2.10.4.tar.gz"
@@ -84,7 +84,7 @@ ARG         LIBXML2_SHA256SUM="f07dab13bf42d2b8db80620cce7419b3b87827cc937c8bb20
 ARG         LIBBLURAY_SHA256SUM="e2dbaf99e84e0a9725f4985bcb85d41e52c2261cc651d8884b1b790b5ef016f9 libbluray-1.3.0.tar.bz2"
 ARG         LIBZMQ_SHA256SUM="0ff5a531c9ffaf0dfdc7dc78d13d1383088f454896d252934c429b2554d10559 v4.3.4.tar.gz"
 ARG         LIBARIBB24_SHA256SUM="f61560738926e57f9173510389634d8c06cabedfa857db4b28fb7704707ff128 v1.0.3.tar.gz"
-ARG         LIBVMAF_SHA256SUM="e7fc00ae1322a7eccfcf6d4f1cdf9c67eec8058709887c8c6c3795c617326f77 v2.1.1.tar.gz"
+# ARG         LIBVMAF_SHA256SUM="e7fc00ae1322a7eccfcf6d4f1cdf9c67eec8058709887c8c6c3795c617326f77 v2.1.1.tar.gz"
 
 
 ARG         LD_LIBRARY_PATH=/opt/ffmpeg/lib
@@ -138,8 +138,10 @@ RUN \
                 DIR=/tmp/vmaf && \
                 mkdir -p ${DIR} && \
                 cd ${DIR} && \
-                curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
-                tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
+                # curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
+                # tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
+                curl -sLO https://github.com/Netflix/vmaf/archive/refs/heads/master.tar.gz && \
+                tar -xz --strip-components=1 -f master.tar.gz && \
                 cd /tmp/vmaf/libvmaf && \
                 meson build --buildtype release --prefix=${PREFIX} --default-library=static && \
                 ninja -vC build && \
