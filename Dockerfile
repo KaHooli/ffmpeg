@@ -630,6 +630,7 @@ RUN \
         cp -v /opt/ffmpeg/lib/libswscale.so.6 /usr/local/lib/libswscale.so.6 && \
         cp -v /opt/ffmpeg/lib/libavutil.so.57 /usr/local/lib/libavutil.so.57 && \
         cp -v /opt/ffmpeg/lib/libxcb-shape.so.0 /usr/local/lib/libxcb-shape.so.0 && \
+        cp -v /opt/ffmpeg/lib/libass.so.9 /usr/local/lib/libass.so.9 && \
         ldd ${PREFIX}/bin/ffmpeg | grep opt/ffmpeg | cut -d ' ' -f 3 | xargs -i cp {} /usr/local/lib/ && \
         for lib in /usr/local/lib/*.so.*; do ln -s "${lib##*/}" "${lib%%.so.*}".so; done && \
         cp ${PREFIX}/bin/* /usr/local/bin/ && \
