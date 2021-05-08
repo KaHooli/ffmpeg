@@ -628,7 +628,7 @@ RUN \
         cp -v /opt/ffmpeg/lib/libpostproc.so.56 /usr/local/lib/libpostproc.so.56 && \
         cp -v /opt/ffmpeg/lib/libswresample.so.4 /usr/local/lib/libswresample.so.4 && \
         cp -v /opt/ffmpeg/lib/libswscale.so.6 /usr/local/lib/libswscale.so.6 && \
-        libavutil.so.57 /usr/local/lib/libavutil.so.57
+        libavutil.so.57 /usr/local/lib/libavutil.so.57 && \
         ldd ${PREFIX}/bin/ffmpeg | grep opt/ffmpeg | cut -d ' ' -f 3 | xargs -i cp {} /usr/local/lib/ && \
         for lib in /usr/local/lib/*.so.*; do ln -s "${lib##*/}" "${lib%%.so.*}".so; done && \
         cp ${PREFIX}/bin/* /usr/local/bin/ && \
