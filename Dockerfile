@@ -569,7 +569,7 @@ RUN \
         --disable-doc \
         --disable-ffplay \
         --enable-shared \
-        --enable-avresample \
+        # --enable-avresample \
         --enable-libopencore-amrnb \
         --enable-libopencore-amrwb \
         --enable-gpl \
