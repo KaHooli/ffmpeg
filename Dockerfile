@@ -132,26 +132,26 @@ RUN \
         rm -rf ${DIR}
 
 # libvmaf https://github.com/Netflix/vmaf
-RUN \
-        if which meson || false; then \
-                echo "Building VMAF." && \
-                DIR=/tmp/vmaf && \
-                mkdir -p ${DIR} && \
-                cd ${DIR} && \
-                # curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
-                # tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
-                curl -sLO https://github.com/Netflix/vmaf/archive/refs/heads/master.tar.gz && \
-                tar -xz --strip-components=1 -f master.tar.gz && \
-                cd /tmp/vmaf/libvmaf && \
-                meson build --buildtype release --prefix=${PREFIX} --default-library=static && \
-                ninja -vC build && \
-                ninja -vC build install && \
-                mkdir -p ${PREFIX}/share/model/ && \
-                cp -r /tmp/vmaf/model/* ${PREFIX}/share/model/ && \
-                rm -rf ${DIR}; \
-        else \
-                echo "VMAF skipped."; \
-        fi
+# RUN \
+#         if which meson || false; then \
+#                 echo "Building VMAF." && \
+#                 DIR=/tmp/vmaf && \
+#                 mkdir -p ${DIR} && \
+#                 cd ${DIR} && \
+#                 # curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
+#                 # tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
+#                 curl -sLO https://github.com/Netflix/vmaf/archive/refs/heads/master.tar.gz && \
+#                 tar -xz --strip-components=1 -f master.tar.gz && \
+#                 cd /tmp/vmaf/libvmaf && \
+#                 meson build --buildtype release --prefix=${PREFIX} --default-library=static && \
+#                 ninja -vC build && \
+#                 ninja -vC build install && \
+#                 mkdir -p ${PREFIX}/share/model/ && \
+#                 cp -r /tmp/vmaf/model/* ${PREFIX}/share/model/ && \
+#                 rm -rf ${DIR}; \
+#         else \
+#                 echo "VMAF skipped."; \
+#         fi
 
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
 RUN \
@@ -603,7 +603,7 @@ RUN \
         --extra-libs=-lpthread \
         --enable-libsrt \
         --enable-libaribb24 \
-        --enable-libvmaf \
+        # --enable-libvmaf \
         --enable-nvenc \
         --enable-cuda \
         --enable-cuvid \
