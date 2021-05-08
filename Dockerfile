@@ -11,7 +11,7 @@ ENV	    NVIDIA_DRIVER_CAPABILITIES compute,utility,video
 WORKDIR     /tmp/workdir
 
 RUN     apt-get -yqq update && \
-        apt-get install -yq --no-install-recommends ca-certificates expat libgomp1 && \
+        apt-get install -yq --no-install-recommends ca-certificates expat libgomp1 apt-utils && \
         apt-get autoremove -y && \
         apt-get clean -y
 
@@ -67,7 +67,7 @@ ENV         FFMPEG_VERSION=4.4 \
             LIBSRT_VERSION=1.4.3 \
             LIBARIBB24_VERSION=1.0.3 \
             LIBPNG_VERSION=1.6.37 \
-            # LIBVMAF_VERSION=2.1.1 \
+            LIBVMAF_VERSION=2.1.1 \
             SRC=/usr/local
 
 ARG         FREETYPE_SHA256SUM="5eab795ebb23ac77001cfb68b7d4d50b5d6c7469247b0b01b2c953269f658dac freetype-2.10.4.tar.gz"
@@ -84,7 +84,7 @@ ARG         LIBXML2_SHA256SUM="f07dab13bf42d2b8db80620cce7419b3b87827cc937c8bb20
 ARG         LIBBLURAY_SHA256SUM="e2dbaf99e84e0a9725f4985bcb85d41e52c2261cc651d8884b1b790b5ef016f9 libbluray-1.3.0.tar.bz2"
 ARG         LIBZMQ_SHA256SUM="0ff5a531c9ffaf0dfdc7dc78d13d1383088f454896d252934c429b2554d10559 v4.3.4.tar.gz"
 ARG         LIBARIBB24_SHA256SUM="f61560738926e57f9173510389634d8c06cabedfa857db4b28fb7704707ff128 v1.0.3.tar.gz"
-# ARG         LIBVMAF_SHA256SUM="e7fc00ae1322a7eccfcf6d4f1cdf9c67eec8058709887c8c6c3795c617326f77 v2.1.1.tar.gz"
+ARG         LIBVMAF_SHA256SUM="e7fc00ae1322a7eccfcf6d4f1cdf9c67eec8058709887c8c6c3795c617326f77 v2.1.1.tar.gz"
 
 
 ARG         LD_LIBRARY_PATH=/opt/ffmpeg/lib
@@ -101,6 +101,7 @@ RUN      buildDeps="autoconf \
                     cmake \
                     curl \
                     bzip2 \
+                    doxygen \
                     libexpat1-dev \
                     g++ \
                     gcc \
@@ -110,9 +111,11 @@ RUN      buildDeps="autoconf \
                     make \
                     meson \
                     nasm \
+                    ninja-build \
                     perl \
                     pkg-config \
                     python \
+                    python3 python3-pip python3-setuptools python3-wheel \
                     libssl-dev \
                     yasm \
                     zlib1g-dev" && \
@@ -121,32 +124,32 @@ RUN      buildDeps="autoconf \
 
 RUN \
 	DIR=/tmp/nv-codec-headers && \
-	git clone https://github.com/FFmpeg/nv-codec-headers ${DIR} && \
+	git clone https://github.com/FFmpeg/nv-codec-headers ${DIR} -c advice.detachedHead=false && \
 	cd ${DIR} && \
 	git checkout n${NVIDIA_HEADERS_VERSION} && \
 	make PREFIX="${PREFIX}" && \
 	make install PREFIX="${PREFIX}" && \
         rm -rf ${DIR}
 
-## libvmaf https://github.com/Netflix/vmaf
-# RUN \
-#         if which meson || false; then \
-#                 echo "Building VMAF." && \
-#                 DIR=/tmp/vmaf && \
-#                 mkdir -p ${DIR} && \
-#                 cd ${DIR} && \
-#                 curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
-#                 tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
-#                 cd /tmp/vmaf/libvmaf && \
-#                 meson build --buildtype release --prefix=${PREFIX} && \
-#                 ninja -vC build && \
-#                 ninja -vC build install && \
-#                 mkdir -p ${PREFIX}/share/model/ && \
-#                 cp -r /tmp/vmaf/model/* ${PREFIX}/share/model/ && \
-#                 rm -rf ${DIR}; \
-#         else \
-#                 echo "VMAF skipped."; \
-#         fi
+# libvmaf https://github.com/Netflix/vmaf
+RUN \
+        if which meson || false; then \
+                echo "Building VMAF." && \
+                DIR=/tmp/vmaf && \
+                mkdir -p ${DIR} && \
+                cd ${DIR} && \
+                curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
+                tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
+                cd /tmp/vmaf/libvmaf && \
+                meson build --buildtype release --prefix=${PREFIX} && \
+                ninja -vC build && \
+                ninja -vC build install && \
+                mkdir -p ${PREFIX}/share/model/ && \
+                cp -r /tmp/vmaf/model/* ${PREFIX}/share/model/ && \
+                rm -rf ${DIR}; \
+        else \
+                echo "VMAF skipped."; \
+        fi
 
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
 RUN \
@@ -554,15 +557,16 @@ RUN  \
         curl -sLO https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
         tar -jx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.bz2
 
+
 RUN \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
         ./configure \
-        --ld="g++" \
+        --ld=clang++ \
         --disable-debug \
         --disable-doc \
         --disable-ffplay \
         --enable-shared \
-        # --enable-avresample \
+        --enable-avresample \
         --enable-libopencore-amrnb \
         --enable-libopencore-amrwb \
         --enable-gpl \
@@ -596,7 +600,7 @@ RUN \
         --extra-libs=-lpthread \
         --enable-libsrt \
         --enable-libaribb24 \
-        # --enable-libvmaf \
+        --enable-libvmaf \
         --enable-nvenc \
         --enable-cuda \
         --enable-cuvid \
