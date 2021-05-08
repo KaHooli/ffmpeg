@@ -5,6 +5,7 @@
 # https://hub.docker.com/r/jrottenberg/ffmpeg/
 #
 #
+FROM    ubuntu:20.04 AS base
 FROM    nvidia/cuda:11.3.0-devel-ubuntu20.04 AS devel-base
 
 ENV	    NVIDIA_DRIVER_CAPABILITIES compute,utility,video
