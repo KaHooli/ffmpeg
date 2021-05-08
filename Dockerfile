@@ -632,7 +632,7 @@ RUN \
 #           sed "s:${PREFIX}:/usr/local:g" <"$pc" >/usr/local/lib/pkgconfig/"${pc##*/}"; \
 #         done
 
-FROM        base AS release
+# FROM        base AS release
 MAINTAINER  Julien Rottenberg <julien@rottenberg.info>
 
 ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
