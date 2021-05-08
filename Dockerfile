@@ -561,8 +561,8 @@ RUN  \
 RUN \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
         ./configure \
-        --ld=clang++ \
-        --enable-cross-compile \
+        --ld=g++ \
+        # --enable-cross-compile \
         --disable-debug \
         --disable-doc \
         --disable-ffplay \
