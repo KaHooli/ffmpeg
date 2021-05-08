@@ -115,7 +115,7 @@ RUN      buildDeps="autoconf \
                     perl \
                     pkg-config \
                     python \
-                    python3 python3-pip python3-setuptools python3-wheel \
+                    python3 python3-pip python3-setuptools python3-wheel python3-opencv \
                     libssl-dev \
                     yasm \
                     zlib1g-dev" && \
