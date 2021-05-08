@@ -141,7 +141,7 @@ RUN \
                 curl -sLO https://github.com/Netflix/vmaf/archive/v${LIBVMAF_VERSION}.tar.gz && \
                 tar -xz --strip-components=1 -f v${LIBVMAF_VERSION}.tar.gz && \
                 cd /tmp/vmaf/libvmaf && \
-                meson build --buildtype release --prefix=${PREFIX} && \
+                meson build --buildtype release --prefix=${PREFIX} --default-library=both && \
                 ninja -vC build && \
                 ninja -vC build install && \
                 mkdir -p ${PREFIX}/share/model/ && \
