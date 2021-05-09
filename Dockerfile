@@ -5,8 +5,8 @@
 # https://hub.docker.com/r/jrottenberg/ffmpeg/
 #
 #
-FROM    nvidia/cuda:11.0-base-ubuntu20.04 AS base
-FROM    nvidia/cuda:11.0-devel-ubuntu20.04 AS devel-base
+FROM    nvidia/cuda:11.3.0-base-ubuntu20.04 AS base
+FROM    nvidia/cuda:11.3.0-devel-ubuntu20.04 AS devel-base
 
 ENV	    NVIDIA_DRIVER_CAPABILITIES compute,utility,video
 WORKDIR     /tmp/workdir
@@ -16,7 +16,7 @@ RUN     apt-get -yqq update && \
         apt-get autoremove -y && \
         apt-get clean -y
 
-FROM    nvidia/cuda:11.0-runtime-ubuntu20.04 AS runtime-base
+FROM    nvidia/cuda:11.3.0-runtime-ubuntu20.04 AS runtime-base
 
 ENV	    NVIDIA_DRIVER_CAPABILITIES compute,utility,video
 WORKDIR     /tmp/workdir
@@ -29,7 +29,7 @@ RUN     apt-get -yqq update && \
 
 FROM    devel-base as build
 
-ENV     NVIDIA_HEADERS_VERSION=11.0.10.1
+ENV     NVIDIA_HEADERS_VERSION=10.0.26.2
 
 ENV         FFMPEG_VERSION=4.4 \
             AOM_VERSION=v3.0.0 \
