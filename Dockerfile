@@ -4,9 +4,10 @@
 #
 # https://hub.docker.com/r/jrottenberg/ffmpeg/
 #
-#
-FROM    nvidia/cuda:11.0-base-ubuntu20.04 AS base
-FROM    nvidia/cuda:11.0-devel-ubuntu20.04 AS devel-base
+
+FROM    nvidia/cuda:11.3.0-base-ubuntu20.04 AS base
+        # nvidia/cuda:10.2-devel-ubuntu18.04 AS devel-base
+FROM    nvidia/cuda:11.3.0-devel-ubuntu20.04 AS devel-base
 
 ENV	    NVIDIA_DRIVER_CAPABILITIES compute,utility,video
 WORKDIR     /tmp/workdir
@@ -16,7 +17,8 @@ RUN     apt-get -yqq update && \
         apt-get autoremove -y && \
         apt-get clean -y
 
-FROM    nvidia/cuda:11.0-runtime-ubuntu20.04 AS runtime-base
+        # nvidia/cuda:10.2-runtime-ubuntu18.04 AS runtime-base
+FROM    nvidia/cuda:11.3.0-runtime-ubuntu20.04 AS runtime-base
 
 ENV	    NVIDIA_DRIVER_CAPABILITIES compute,utility,video
 WORKDIR     /tmp/workdir
@@ -26,47 +28,68 @@ RUN     apt-get -yqq update && \
         apt-get autoremove -y && \
         apt-get clean -y
 
-
 FROM    devel-base as build
 
-ENV     NVIDIA_HEADERS_VERSION=10.0.26.2
+        # NVIDIA_HEADERS_VERSION=9.1.23.1
+ENV     NVIDIA_HEADERS_VERSION=9.1.23.3
 
+            # FFMPEG_VERSION=snapshot \
 ENV         FFMPEG_VERSION=4.4 \
+            # AOM_VERSION=v1.0.0 \
             AOM_VERSION=v3.0.0 \
+            # FDKAAC_VERSION=0.1.5 \
             FDKAAC_VERSION=2.0.2 \
+            FONTCONFIG_VERSION=2.12.4 \
             # Pulling FontConfig via Git due to fixes added since latest release
             # FONTCONFIG_VERSION=2.13.93 \
-            FONTCONFIG_VERSION=2.12.4 \
+            # FREETYPE_VERSION=2.5.5 \
             FREETYPE_VERSION=2.10.4 \
+            FRIBIDI_VERSION=0.19.7 \
             # FRIBIDI_VERSION=v1.0.10 \
             # Can't use latest Fribidi as it has missing files
-            FRIBIDI_VERSION=0.19.7 \
             KVAZAAR_VERSION=2.0.0 \
             LAME_VERSION=3.100 \
+            # LIBASS_VERSION=0.13.7 \
             LIBASS_VERSION=0.15.0 \
             LIBPTHREAD_STUBS_VERSION=0.4 \
             LIBVIDSTAB_VERSION=1.1.0 \
+            # LIBXCB_VERSION=1.13.1 \
             LIBXCB_VERSION=1.14 \
+            # XCBPROTO_VERSION=1.13 \
             XCBPROTO_VERSION=1.14 \
+            # OGG_VERSION=1.3.2 \
             OGG_VERSION=1.3.4 \
             OPENCOREAMR_VERSION=0.1.5 \
+            # OPUS_VERSION=1.2 \
             OPUS_VERSION=1.3.1 \
+            # OPENJPEG_VERSION=2.1.2 \
             OPENJPEG_VERSION=2.4.0 \
             THEORA_VERSION=1.1.1 \
+            # VORBIS_VERSION=1.3.5 \
             VORBIS_VERSION=1.3.7 \
+            # VPX_VERSION=1.8.0 \
             VPX_VERSION=1.10.0 \
+            # WEBP_VERSION=1.0.2 \
             WEBP_VERSION=1.2.0 \
+            # X264_VERSION=20170226-2245-stable \
             X264_VERSION=20191217-2245-stable \
+            # X265_VERSION=3.1.1 \
             X265_VERSION=3.2.1 \
             XAU_VERSION=1.0.9 \
+            # XORG_MACROS_VERSION=1.19.2 \
             XORG_MACROS_VERSION=1.19.3 \
             XPROTO_VERSION=7.0.31 \
+            # XVID_VERSION=1.3.4 \
             XVID_VERSION=1.3.7 \
             LIBXML2_VERSION=2.9.10 \
+            # LIBBLURAY_VERSION=1.1.2 \
             LIBBLURAY_VERSION=1.3.0 \
+            # LIBZMQ_VERSION=4.3.2 \
             LIBZMQ_VERSION=4.3.4 \
+            # LIBSRT_VERSION=1.4.1 \
             LIBSRT_VERSION=1.4.3 \
             LIBARIBB24_VERSION=1.0.3 \
+            # LIBPNG_VERSION=1.6.9 \
             LIBPNG_VERSION=1.6.37 \
             # LIBVMAF_VERSION=2.1.1 \
             SRC=/usr/local
